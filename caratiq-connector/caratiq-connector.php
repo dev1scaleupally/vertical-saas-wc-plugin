@@ -6,8 +6,6 @@ Version: 1.0
 Author: Scaleupally
 */
 
-
-
 // Prevent direct access to the file
 if (!defined('ABSPATH')) {
     exit;
@@ -53,8 +51,8 @@ function caratiq_connector_page()
 
 function caratiq_get_authorization_url()
 {
-    $redirect_uri = urlencode(admin_url('admin.php?page=caratiq-connector')); // Use admin URL as redirect
-    $auth_url = "http://local.projects.com/caratIQ/auth-woocommerce.php?redirect_uri=$redirect_uri";
+    $redirect_uri = admin_url('admin.php?page=caratiq-connector'); // Use admin URL as redirect
+    $auth_url = "https://caratiq-customer-website.scaleupdevops.in/woocommerce-auth?redirect_uri=$redirect_uri";
     return $auth_url;
 }
 
@@ -63,8 +61,8 @@ add_action('admin_init', 'caratiq_handle_auth_code');
 
 function caratiq_handle_auth_code()
 {
-    if (isset($_GET['page']) && $_GET['page'] == 'caratiq-connector' && isset($_GET['code'])) {
-        $authorization_code = sanitize_text_field($_GET['code']);
+    if (isset($_GET['page']) && $_GET['page'] == 'caratiq-connector' && isset($_GET['auth_code'])) {
+        $authorization_code = sanitize_text_field($_GET['auth_code']);
         caratiq_verify_authorization_code($authorization_code);
     }
 }
@@ -72,7 +70,7 @@ function caratiq_handle_auth_code()
 function caratiq_verify_authorization_code($authorization_code)
 {
     // Dummy API URL, replace with the actual API endpoint
-    $api_url = 'http://local.projects.com/caratIQ/verify-auth-code.php';
+    $api_url = 'https://caratiq-cms.scaleupdevops.in/api/verify-auth-code';
 
 
     $response = wp_remote_post($api_url, array(
@@ -102,11 +100,11 @@ function caratiq_create_customer_key($token)
         return;
     }
     $user_id = 1;
-    $description = "test";
+    $description = "Connection with CaratIQ";
     $permissions = "read_write";
     $response = generate_woocommerce_api_key($user_id, $description, $permissions);
 
-    $api_url = 'http://local.projects.com/caratIQ/verify-auth-code.php';
+    $api_url = 'https://caratiq-cms.scaleupdevops.in/api/verify-woo-token';
 
     $response = wp_remote_post($api_url, array(
         'method'    => 'POST',
@@ -125,6 +123,7 @@ function caratiq_create_customer_key($token)
 
         <div class="wrap">
             <h1>You have connected to CaratIQ successfully.</h1>
+            <p>You can close this page...</p>
         </div>
 
     <?php
@@ -138,13 +137,6 @@ function caratiq_create_customer_key($token)
         exit;
     }
 }
-
-
-
-
-
-
-
 
 // Function to generate WooCommerce API key
 function generate_woocommerce_api_key($user_id, $description, $permissions)
