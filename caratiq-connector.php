@@ -3,7 +3,7 @@
 Plugin Name: CaratIQ Connector
 Description: A plugin to connect to CaratIQ API and handle authorization and key management.
 Version: 1.0
-Author: Scaleupally
+Author: CaratIQ
 */
 
 // Prevent direct access to the file
