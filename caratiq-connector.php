@@ -52,7 +52,7 @@ function caratiq_connector_page()
 function caratiq_get_authorization_url()
 {
     $redirect_uri = admin_url('admin.php?page=caratiq-connector'); // Use admin URL as redirect
-    $auth_url = "https://vertical-saas.bndigital.dev/woocommerce-auth?redirect_uri=$redirect_uri";
+    $auth_url = "https://uat.caratiqdemo.com/woocommerce-auth?redirect_uri=$redirect_uri";
     return $auth_url;
 }
 
@@ -70,7 +70,7 @@ function caratiq_handle_auth_code()
 function caratiq_verify_authorization_code($authorization_code)
 {
     // Dummy API URL, replace with the actual API endpoint
-    $api_url = 'https://vertical-saas.bndigital.dev/api/verify-auth-code';
+    $api_url = 'https://uat.caratiqdemo.com/api/verify-auth-code';
 
 
     $response = wp_remote_post($api_url, array(
@@ -104,7 +104,7 @@ function caratiq_create_customer_key($token)
     $permissions = "read_write";
     $response = generate_woocommerce_api_key($user_id, $description, $permissions);
 
-    $api_url = 'https://vertical-saas.bndigital.dev/api/verify-woo-token';
+    $api_url = 'https://uat.caratiqdemo.com/api/verify-woo-token';
 
     $response = wp_remote_post($api_url, array(
         'method'    => 'POST',
